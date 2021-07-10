@@ -18,6 +18,7 @@ public class Character2DController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         facingRight = true;
+        animator.SetBool("IsGrounded", true);
     }
 
     // Update is called once per frame
@@ -29,14 +30,35 @@ public class Character2DController : MonoBehaviour
 
         Flip(movement);
 
-        animator.SetFloat("MovementSpeed", Mathf.Abs(movement));
+        SetAnimatorStates(movement);
+
+        CheckIfGrounded();
 
         if (Input.GetButtonDown("Jump") && Mathf.Abs(_rigidbody.velocity.y) < 0.001f)
         {
+            animator.SetBool("IsGrounded", false);
             _rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
         }
     }
 
+    // Sets animator variables through scrip for UpwardsVelocity and MovementSpeed
+    private void SetAnimatorStates(System.Single movement)
+    {
+        animator.SetFloat("MovementSpeed", Mathf.Abs(movement));
+
+        animator.SetFloat("UpwardsVelocity", _rigidbody.velocity.y);
+    }
+
+    // Checks if the player character is grounded and sets animator bool
+    private void CheckIfGrounded()
+    {
+        if (_rigidbody.velocity.y == 0)
+        {
+            animator.SetBool("IsGrounded", true);
+        }
+    }
+
+    // Face player character the same way the movement velocity is positive
     private void Flip(float moveHorizontal)
     {
         if (moveHorizontal > 0 && !facingRight || moveHorizontal < 0 && facingRight)
