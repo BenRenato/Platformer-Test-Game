@@ -8,8 +8,8 @@ public class PlayerStats : DamageableObject
     protected override void Start()
     {
         base.Start();
-        base.setHealthPoints(3);
-        printHealthPoints();
+        base.SetHealthPoints(3);
+        PrintHealthPoints();
 
     }
 
@@ -19,8 +19,15 @@ public class PlayerStats : DamageableObject
         
     }
 
-    void printHealthPoints()
+    private void PrintHealthPoints()
     {
-        Debug.Log("Player health points are: " + base.getHealthPoints());
+        Debug.Log("Player health points are: " + base.GetHealthPoints());
+    }
+
+    protected override void OnDeath()
+    {
+
+        Destroy(this.gameObject);
+        
     }
 }

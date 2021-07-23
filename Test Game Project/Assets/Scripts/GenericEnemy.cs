@@ -8,8 +8,8 @@ public class GenericEnemy : DamageableObject
     protected override void Start()
     {
         base.Start();
-        base.setHealthPoints(2);
-        printGenericEnemyHealthPoints();
+        base.SetHealthPoints(2);
+        PrintGenericEnemyHealthPoints();
                 
     }
 
@@ -19,8 +19,14 @@ public class GenericEnemy : DamageableObject
         
     }
 
-    private void printGenericEnemyHealthPoints()
+    private void PrintGenericEnemyHealthPoints()
     {
-        Debug.Log("Enemy health points are: " + base.getHealthPoints());
+        Debug.Log("Enemy health points are: " + base.GetHealthPoints());
+    }
+
+    protected override void OnDeath()
+    {
+        //TODO
+        return;
     }
 }
