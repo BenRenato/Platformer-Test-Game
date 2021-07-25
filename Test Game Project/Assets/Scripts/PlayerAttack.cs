@@ -30,10 +30,10 @@ public class PlayerAttack : MonoBehaviour
         Debug.Log("Triggering attack");
         animatior.SetTrigger("Basic Attack");
 
-        /* Hitbox detection
+        /* Hitbox detection, probably need to change this from a raycast to use the two overhead/swing colliders.
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackOrigin.position, attackRange, enemyLayers);
 
-         Damage calculation iterable TODO: Continue from tutorial video @ 9:55
+         Damage calculation iterable can probably be kept.
         foreach (Collider2D enemy in hitEnemies)
         {
             Debug.Log("We hit " + enemy.name);
