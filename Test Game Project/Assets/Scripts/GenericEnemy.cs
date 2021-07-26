@@ -27,6 +27,7 @@ public class GenericEnemy : DamageableObject
     protected override void OnDeath()
     {
         //TODO
-        return;
+        ScoreScript.scoreValue += 1;
+        Destroy(this.gameObject);
     }
 }

@@ -13,6 +13,24 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask enemyLayers;
     */
 
+
+    private bool isAttacking = false;
+    private float attackTimer = 0;
+    private float attackCooldown = 0f;
+    
+
+    public Collider2D forwardSwingHitbox;
+    public Collider2D overheadSwingHitbox;
+
+    private void Awake()
+    {
+        forwardSwingHitbox = forwardSwingHitbox.GetComponent<Collider2D>();
+        overheadSwingHitbox = overheadSwingHitbox.GetComponent<Collider2D>();
+
+        forwardSwingHitbox.enabled = false;
+        overheadSwingHitbox.enabled = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -20,25 +38,37 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             BasicAttack();
-
         }
+
+        
+        if (isAttacking)
+        {
+            if (attackTimer > 0)
+            {
+                attackTimer = Time.deltaTime;
+            }
+            else
+            {
+                isAttacking = false;
+            }
+        }
+        
 
     }
 
     void BasicAttack()
     {
         Debug.Log("Triggering attack");
+        
+        isAttacking = true;
+        attackTimer = attackCooldown;
+        
         animatior.SetTrigger("Basic Attack");
+        forwardSwingHitbox.enabled = true;
+        overheadSwingHitbox.enabled = true;
 
-        /* Hitbox detection, probably need to change this from a raycast to use the two overhead/swing colliders.
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackOrigin.position, attackRange, enemyLayers);
-
-         Damage calculation iterable can probably be kept.
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Debug.Log("We hit " + enemy.name);
-
-        }
-        */
     }
+
+
+
 }

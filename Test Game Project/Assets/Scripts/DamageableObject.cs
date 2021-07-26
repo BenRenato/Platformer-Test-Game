@@ -34,6 +34,7 @@ public abstract class DamageableObject : MonoBehaviour
     protected void ReduceHealthPoints(int damageInflicted)
     {
         SetHealthPoints(GetHealthPoints() - damageInflicted);
+        Debug.Log("Current HP: " + GetHealthPoints());
         //Check if object is "dead".
         CheckIfHealthZero();
     }
