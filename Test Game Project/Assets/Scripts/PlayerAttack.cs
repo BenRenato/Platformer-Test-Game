@@ -7,11 +7,15 @@ public class PlayerAttack : MonoBehaviour
 
     public Animator animatior;
 
-
+    //Attack starting points
     public Transform attackPointForward;
     public Transform attackPointOverhead;
+    
+    //Individual ranges for each collider
     public float attackRangeForward = 0.5f;
     public float attackRangeOverhead = 0.5f;
+
+    //Enemies layer
     public LayerMask enemyLayers;
 
     // Update is called once per frame
@@ -23,7 +27,7 @@ public class PlayerAttack : MonoBehaviour
             BasicAttack();
         }
 
-        
+        //StrongAttack() -> BuildHitEnemyList() -> ReduceHealthPoints(2).
 
     }
 
@@ -33,15 +37,37 @@ public class PlayerAttack : MonoBehaviour
 
         animatior.SetTrigger("Basic Attack");
 
-        List<Collider2D> hitEnemies = new List<Collider2D>(Physics2D.OverlapCircleAll(attackPointForward.position, attackRangeForward, enemyLayers));
+        var hitEnemiesList = BuildHitEnemyList();
 
-        hitEnemies.AddRange(Physics2D.OverlapCircleAll(attackPointOverhead.position, attackRangeOverhead, enemyLayers));
+        //Return early if we hit nothing
+        if (hitEnemiesList.Count == 0)
+        {
+            Debug.Log("Hit nothing.");
+            return;
+        }
 
-        foreach (Collider2D enemy in hitEnemies)
+        //Iterate over the list
+        foreach (Collider2D enemy in hitEnemiesList)
         {
             Debug.Log("Enemy hit.");
-            enemy.SendMessageUpwards("ReduceHealthPoints", 1);
+            
+            //This might be less expensive than SendMessageUpward(), need to profile.
+            //TODO PROFILE COMPARSION
+            enemy.gameObject.GetComponent<GenericEnemy>().ReduceHealthPoints(1); 
+
+            //enemy.SendMessageUpwards("ReduceHealthPoints", 1);
         }
+    }
+
+    List<Collider2D> BuildHitEnemyList()
+    {
+        //Get all colliders that are hit by the forward swing
+        List<Collider2D> hitEnemies = new List<Collider2D>(Physics2D.OverlapCircleAll(attackPointForward.position, attackRangeForward, enemyLayers));
+
+        //Add another list of overhead colliders that are hit
+        hitEnemies.AddRange(Physics2D.OverlapCircleAll(attackPointOverhead.position, attackRangeOverhead, enemyLayers));
+
+        return hitEnemies;
     }
 
     private void OnDrawGizmosSelected()

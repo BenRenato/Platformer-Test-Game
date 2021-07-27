@@ -31,7 +31,7 @@ public abstract class DamageableObject : MonoBehaviour
         return this.healthPoints;
     }
 
-    protected void ReduceHealthPoints(int damageInflicted)
+    protected internal void ReduceHealthPoints(int damageInflicted)
     {
         SetHealthPoints(GetHealthPoints() - damageInflicted);
         Debug.Log("Current HP: " + GetHealthPoints());
