@@ -56,6 +56,10 @@ public class Character2DController : MonoBehaviour
         {
             animator.SetBool("IsGrounded", true);
         }
+        if(_rigidbody.velocity.y < 0)
+        {
+            animator.SetBool("IsGrounded", false);
+        }
     }
 
     // Face player character the same way the movement velocity is positive

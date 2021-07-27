@@ -15,9 +15,15 @@ public class PlayerAttack : MonoBehaviour
     public float attackRangeForward = 0.5f;
     public float attackRangeOverhead = 0.5f;
 
+    GenericEnemy GenericEnemyScriptCache;
+
     //Enemies layer
     public LayerMask enemyLayers;
 
+    private void Awake()
+    {
+        GenericEnemyScriptCache = GetComponent<GenericEnemy>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -50,7 +56,7 @@ public class PlayerAttack : MonoBehaviour
         foreach (Collider2D enemy in hitEnemiesList)
         {
             Debug.Log("Enemy hit.");
-            
+
             //This might be less expensive than SendMessageUpward(), need to profile.
             //TODO PROFILE COMPARSION
             enemy.gameObject.GetComponent<GenericEnemy>().ReduceHealthPoints(1); 
