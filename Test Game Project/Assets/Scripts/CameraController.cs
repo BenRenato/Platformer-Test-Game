@@ -28,6 +28,13 @@ public class CameraController : MonoBehaviour
             transform.position = new Vector3(2, player.position.y + offset.y, offset.z);
         }*/
 
+        if (player.transform.position.x <= -13)
+        {
+            Debug.Log("Camera boundary triggered.");
+            transform.position = new Vector3(-13 + offset.x, player.position.y + offset.y, offset.z);
+            return;
+        }
+
         //Make the camera's position change in accordance with player position
         transform.position = new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z); 
     }
