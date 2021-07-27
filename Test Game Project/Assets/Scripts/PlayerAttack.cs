@@ -7,29 +7,12 @@ public class PlayerAttack : MonoBehaviour
 
     public Animator animatior;
 
-    /* Attack specific variables
-    public Transform attackOrigin;
-    public float attackRange = 0.5f;
+
+    public Transform attackPointForward;
+    public Transform attackPointOverhead;
+    public float attackRangeForward = 0.5f;
+    public float attackRangeOverhead = 0.5f;
     public LayerMask enemyLayers;
-    */
-
-
-    private bool isAttacking = false;
-    private float attackTimer = 0;
-    private float attackCooldown = 0f;
-    
-
-    public Collider2D forwardSwingHitbox;
-    public Collider2D overheadSwingHitbox;
-
-    private void Awake()
-    {
-        forwardSwingHitbox = forwardSwingHitbox.GetComponent<Collider2D>();
-        overheadSwingHitbox = overheadSwingHitbox.GetComponent<Collider2D>();
-
-        forwardSwingHitbox.enabled = false;
-        overheadSwingHitbox.enabled = false;
-    }
 
     // Update is called once per frame
     void Update()
@@ -41,32 +24,30 @@ public class PlayerAttack : MonoBehaviour
         }
 
         
-        if (isAttacking)
-        {
-            if (attackTimer > 0)
-            {
-                attackTimer = Time.deltaTime;
-            }
-            else
-            {
-                isAttacking = false;
-            }
-        }
-        
 
     }
 
     void BasicAttack()
     {
         Debug.Log("Triggering attack");
-        
-        isAttacking = true;
-        attackTimer = attackCooldown;
-        
-        animatior.SetTrigger("Basic Attack");
-        forwardSwingHitbox.enabled = true;
-        overheadSwingHitbox.enabled = true;
 
+        animatior.SetTrigger("Basic Attack");
+
+        List<Collider2D> hitEnemies = new List<Collider2D>(Physics2D.OverlapCircleAll(attackPointForward.position, attackRangeForward, enemyLayers));
+
+        hitEnemies.AddRange(Physics2D.OverlapCircleAll(attackPointOverhead.position, attackRangeOverhead, enemyLayers));
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("Enemy hit.");
+            enemy.SendMessageUpwards("ReduceHealthPoints", 1);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(attackPointForward.position, attackRangeForward);
+        Gizmos.DrawWireSphere(attackPointOverhead.position, attackRangeOverhead);
     }
 
 
