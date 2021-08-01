@@ -13,7 +13,10 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
+        //Get player initial x value as minimum "boundary" of level
         minXPos = player.position.x;
+        //We want to keep the camera following the player
+        DontDestroyOnLoad(this.gameObject);
     }
 
     void Update()
@@ -28,10 +31,10 @@ public class CameraController : MonoBehaviour
             transform.position = new Vector3(2, player.position.y + offset.y, offset.z);
         }*/
 
-        if (player.transform.position.x <= -13)
+        if (player.transform.position.x <= minXPos)
         {
             Debug.Log("Camera boundary triggered.");
-            transform.position = new Vector3(-13 + offset.x, player.position.y + offset.y, offset.z);
+            transform.position = new Vector3(minXPos + offset.x, player.position.y + offset.y, offset.z);
             return;
         }
 

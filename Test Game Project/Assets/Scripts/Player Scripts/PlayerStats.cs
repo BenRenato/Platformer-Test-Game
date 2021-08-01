@@ -10,6 +10,8 @@ public class PlayerStats : DamageableObject
         base.Start();
         base.SetHealthPoints(3);
         PrintHealthPoints();
+        //Always take through the player on scene load.
+        DontDestroyOnLoad(this.gameObject);
 
     }
 
