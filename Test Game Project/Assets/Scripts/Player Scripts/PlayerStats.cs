@@ -11,6 +11,7 @@ public class PlayerStats : DamageableObject
         base.SetHealthPoints(3);
         PrintHealthPoints();
         //Always take through the player on scene load.
+        //Don't want to use this but can't change scenes.
         DontDestroyOnLoad(this.gameObject);
 
     }

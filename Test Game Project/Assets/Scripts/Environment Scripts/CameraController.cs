@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
         //Get player initial x value as minimum "boundary" of level
         minXPos = player.position.x;
         //We want to keep the camera following the player
+        //Don't want to use.
         DontDestroyOnLoad(this.gameObject);
     }
 
